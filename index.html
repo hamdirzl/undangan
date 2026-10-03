@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tasyakuran Aqiqah - Aisyah Rumaisha Aghnia</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-cream: #FFFDFB;
+            --bg-soft-pink: #FDF5F5;
+            --dusty-rose: #D1817E;
+            --dusty-rose-dark: #B66663;
+            --dusty-rose-light: #E8B4B2;
+            --sage-green: #8FA382;
+            --text-dark: #4A3B3B;
+            --text-muted: #846C6C;
+            --gold-accent: #C59B6D;
+            --font-script: 'Alex Brush', cursive;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Poppins', sans-serif;
+            --font-arabic: 'Amiri', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #EBE3E0;
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        body.locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Mobile Frame Container */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            background-color: var(--bg-cream);
+            position: relative;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            padding-bottom: 95px;
+        }
+
+        /* Floating Petals Effect */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 25;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background: rgba(232, 180, 178, 0.55);
+            border-radius: 150% 0 150% 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translate(0, -20px) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(45px, 100vh) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
+        /* Cover Overlay */
+        #cover-overlay {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background: radial-gradient(circle at center, #FFFFFF 0%, #FDF2F2 100%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 35px;
+            text-align: center;
+            transition: transform 0.95s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.9s ease;
+            overflow-y: auto;
+        }
+
+        #cover-overlay.open {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .cover-content {
+            padding: 0 24px;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* Top Floral Header Decoration (FIXED: Tidak terpotong lagi) */
+        .floral-header-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            pointer-events: none;
+            overflow: visible;
+            filter: drop-shadow(0 4px 8px rgba(209, 129, 126, 0.1));
+        }
+
+        /* Script Titles */
+        .script-title {
+            font-family: var(--font-script);
+            font-size: 2.65rem;
+            color: var(--dusty-rose);
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 6px 0;
+            text-shadow: 0 2px 4px rgba(209, 129, 126, 0.12);
+        }
+
+        /* Circular Baby Frame with Wreath & Fairies */
+        .baby-hero-wrapper {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 8px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wreath-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: visible;
+            animation: slowSpin 35s linear infinite;
+        }
+
+        @keyframes slowSpin {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(4deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .baby-photo-circle {
+            width: 176px;
+            height: 176px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #fff;
+            box-shadow: 0 8px 25px rgba(182, 102, 99, 0.25);
+            position: relative;
+            z-index: 1;
+            background-color: #f9ecec;
+        }
+
+        .baby-photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fairy-badge {
+            position: absolute;
+            z-index: 4;
+            width: 76px;
+            height: 76px;
+            overflow: visible;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+            animation: floatFairy 3.5s ease-in-out infinite;
+        }
+
+        .fairy-left {
+            left: -24px;
+            top: 22px;
+        }
+
+        .fairy-right {
+            right: -24px;
+            bottom: 12px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes floatFairy {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-9px) rotate(3deg); }
+        }
+
+        .baby-short-name {
+            font-family: var(--font-script);
+            font-size: 3rem;
+            color: var(--dusty-rose);
+            margin-top: 2px;
+        }
+
+        .baby-full-name {
+            font-family: var(--font-script);
+            font-size: 2.35rem;
+            color: var(--dusty-rose);
+            margin: 12px 0 6px;
+            line-height: 1.25;
+        }
+
+        .cover-date {
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            color: var(--dusty-rose);
+            font-weight: 500;
+            margin: 4px 0 10px;
+        }
+
+        .recipient-box {
+            margin: 6px 0 14px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .recipient-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-top: 4px;
+            padding: 4px 16px;
+            border-bottom: 1.5px dashed var(--dusty-rose-light);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--dusty-rose) 0%, var(--dusty-rose-dark) 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            box-shadow: 0 6px 18px rgba(209, 129, 126, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(209, 129, 126, 0.55);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        /* Sections General */
+        section {
+            padding: 22px 22px;
+            text-align: center;
+            position: relative;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: all 0.85s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bismillah {
+            font-family: var(--font-arabic);
+            font-size: 1.85rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .salam {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .intro-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            max-width: 360px;
+            margin: 0 auto 20px;
+        }
+
+        .parents-info {
+            font-size: 0.86rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .parents-info strong {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Birth Stats Row (4 Kolom Rapi Sesuai Data) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 18px 0 10px;
+            padding: 14px 8px;
+            background: rgba(253, 245, 245, 0.75);
+            border-radius: 16px;
+            border: 1px solid rgba(209, 129, 126, 0.2);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #fff;
+            border: 1.2px solid var(--dusty-rose-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dusty-rose);
+            font-size: 1rem;
+            margin-bottom: 6px;
+            box-shadow: 0 3px 8px rgba(209, 129, 126, 0.1);
+        }
+
+        .stat-value {
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Floral Divider Strip (FIXED: Tidak terpotong lagi) */
+        .floral-divider {
+            width: 100%;
+            margin: 10px 0;
+            padding: 6px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .floral-divider svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        /* Countdown Timer */
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 18px 0 20px;
+        }
+
+        .countdown-box {
+            background-color: var(--dusty-rose);
+            color: #fff;
+            width: 72px;
+            padding: 12px 6px;
+            border-radius: 10px;
+            box-shadow: 0 5px 14px rgba(209, 129, 126, 0.35);
+        }
+
+        .countdown-num {
+            font-size: 1.45rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            opacity: 0.92;
+            margin-top: 3px;
+        }
+
+        /* Arch Card Section (Tasyakuran & Map) */
+        .arch-section-wrapper {
+            margin-top: 36px;
+            position: relative;
+        }
+
+        .arch-top-fairies {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin-bottom: -22px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .arch-card {
+            background-color: var(--dusty-rose);
+            color: #fff;
+            border-radius: 220px 220px 28px 28px;
+            padding: 52px 22px 35px;
+            box-shadow: 0 12px 30px rgba(182, 102, 99, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .mosque-icon {
+            font-size: 2rem;
+            margin-bottom: 6px;
+            color: #fff;
+            opacity: 0.95;
+        }
+
+        .arch-card .script-title {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 14px;
+        }
+
+        .event-month {
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .event-date-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin: 12px 0 16px;
+        }
+
+        .date-side {
+            border-top: 1.5px solid rgba(255, 255, 255, 0.75);
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.75);
+            padding: 5px 14px;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            min-width: 90px;
+        }
+
+        .date-center {
+            font-size: 3.1rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .event-time {
+            font-size: 0.88rem;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        .location-pin {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .event-address {
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Map Box inside Arch */
+        .map-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            color: var(--text-dark);
+        }
+
+        .map-card iframe {
+            width: 100%;
+            height: 210px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            padding: 8px 20px;
+            background: #fff;
+            color: var(--dusty-rose);
+            border: 1.5px solid var(--dusty-rose-light);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-map:hover {
+            background: var(--dusty-rose);
+            color: #fff;
+        }
+
+        /* Doa & Gallery Section */
+        .mushroom-illustration {
+            width: 180px;
+            margin: 0;
+            display: block;
+            overflow: visible;
+        }
+
+        .doa-title {
+            font-family: var(--font-serif);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--dusty-rose);
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .doa-quote {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--dusty-rose);
+            line-height: 1.65;
+            padding: 0 10px;
+            margin-bottom: 18px;
+        }
+
+        .stroller-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 22px 0;
+            color: var(--dusty-rose);
+        }
+
+        .stroller-divider::before,
+        .stroller-divider::after {
+            content: "";
+            height: 1px;
+            width: 85px;
+            background: var(--dusty-rose-light);
+        }
+
+        /* Photo Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .gallery-item {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 3px solid #fff;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+            aspect-ratio: 16 / 10;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Quran Verse Banner */
+        .verse-banner {
+            background-color: var(--dusty-rose);
+            color: #fff;
+            border-radius: 28px;
+            padding: 35px 22px;
+            margin: 35px 0 10px;
+            box-shadow: 0 10px 25px rgba(209, 129, 126, 0.3);
+            position: relative;
+        }
+
+        .verse-arabic {
+            font-family: var(--font-arabic);
+            font-size: 1.45rem;
+            line-height: 2;
+            margin-bottom: 16px;
+        }
+
+        .verse-translation {
+            font-size: 0.8rem;
+            font-style: italic;
+            line-height: 1.75;
+            opacity: 0.95;
+            margin-bottom: 12px;
+        }
+
+        .verse-source {
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Wishes & RSVP Card */
+        .wishes-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 22px 18px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(209, 129, 126, 0.18);
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .comment-count-title {
+            text-align: center;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 14px;
+        }
+
+        .rsvp-tally-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tally-box {
+            padding: 12px 10px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .tally-box.hadir {
+            background-color: #79D186;
+        }
+
+        .tally-box.tidak-hadir {
+            background-color: #D9535E;
+        }
+
+        .tally-num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .tally-label {
+            font-size: 0.74rem;
+            margin-top: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #C8B6B6;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.84rem;
+            color: var(--text-dark);
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--dusty-rose);
+        }
+
+        textarea.form-control {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .btn-send {
+            background: #1C1C1E;
+            color: #fff;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-send:hover {
+            opacity: 0.88;
+        }
+
+        .btn-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .wishes-list {
+            margin-top: 20px;
+            max-height: 280px;
+            overflow-y: auto;
+            border-top: 1px solid #F0E4E4;
+            padding-top: 12px;
+        }
+
+        .wish-item {
+            padding: 10px 12px;
+            background: var(--bg-soft-pink);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+
+        .wish-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .wish-author {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .wish-badge {
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .wish-badge.hadir { background-color: #79D186; }
+        .wish-badge.tidak { background-color: #D9535E; }
+
+        .wish-message {
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .wish-date {
+            font-size: 0.65rem;
+            color: #aa9696;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Closing Footer Section */
+        .closing-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            margin: 14px auto;
+            max-width: 340px;
+        }
+
+        .sign-off {
+            margin-top: 18px;
+            font-size: 0.86rem;
+            color: var(--text-dark);
+        }
+
+        .couple-script {
+            font-family: var(--font-script);
+            font-size: 2.6rem;
+            color: var(--dusty-rose);
+            margin-top: 4px;
+        }
+
+        /* Floating Audio Button */
+        .audio-btn {
+            position: fixed;
+            bottom: 90px;
+            left: calc(50% - 205px);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--dusty-rose);
+            color: #fff;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 40;
+            box-shadow: 0 4px 12px rgba(182, 102, 99, 0.4);
+            transition: transform 0.2s;
+        }
+
+        @media (max-width: 450px) {
+            .audio-btn {
+                left: 16px;
+            }
+        }
+
+        .audio-btn.playing i {
+            animation: pulseAudio 1.6s infinite;
+        }
+
+        @keyframes pulseAudio {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+
+        /* Bottom Floating Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 82%;
+            max-width: 340px;
+            background: rgba(209, 129, 126, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 45;
+            box-shadow: 0 8px 25px rgba(182, 102, 99, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.15rem;
+            text-decoration: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            background: #fff;
+            color: var(--dusty-rose);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.82);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 92%;
+            max-height: 82vh;
+            border-radius: 14px;
+            border: 4px solid #fff;
+        }
+
+        /* Butterfly Accent */
+        .butterfly-accent {
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+            overflow: visible;
+            animation: flutter 3s ease-in-out infinite;
+        }
+
+        @keyframes flutter {
+            0%, 100% { transform: translateY(0) scaleX(1); }
+            50% { transform: translateY(-5px) scaleX(0.88); }
+        }
+
+        /* Admin Modal (/?admin=1) */
+        .admin-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-box {
+            background: #fff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .admin-guest-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .admin-guest-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-soft-pink);
+            padding: 10px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 0.78rem;
+        }
+
+        .btn-sm {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            color: #fff;
+            font-family: var(--font-sans);
+        }
+    </style>
+</head>
+<body class="locked">
+
+    <!-- Reusable SVG Definitions (FIXED VIEWBOX AGAR TIDAK TERPOTONG) -->
+    <svg style="display:none;">
+        <defs>
+            <!-- Top Hanging Watercolor Floral Header -->
+            <g id="hanging-floral">
+                <!-- Soft Eucalyptus & Pink Blossoms -->
+                <path d="M0,0 L450,0 L450,45 Q380,100 310,55 Q225,115 140,60 Q70,105 0,50 Z" fill="#FDF2F2" opacity="0.75"/>
+                <!-- Stems -->
+                <path d="M40,0 Q55,55 32,95 M115,0 Q125,65 142,115 M225,0 Q220,60 238,105 M325,0 Q310,70 338,115 M405,0 Q390,55 415,95" stroke="#8FA382" stroke-width="1.6" fill="none" opacity="0.65"/>
+                <!-- Leaves -->
+                <ellipse cx="45" cy="45" rx="14" ry="7" transform="rotate(-30 45 45)" fill="#9CAF88" opacity="0.75"/>
+                <ellipse cx="65" cy="60" rx="14" ry="7" transform="rotate(25 65 60)" fill="#8FA382" opacity="0.75"/>
+                <ellipse cx="158" cy="50" rx="16" ry="8" transform="rotate(35 158 50)" fill="#A9BA9D" opacity="0.8"/>
+                <ellipse cx="288" cy="52" rx="15" ry="7" transform="rotate(-35 288 52)" fill="#9CAF88" opacity="0.75"/>
+                <ellipse cx="385" cy="48" rx="14" ry="7" transform="rotate(25 385 48)" fill="#8FA382" opacity="0.75"/>
+                <!-- Watercolor Flowers -->
+                <g transform="translate(88, 44)">
+                    <circle cx="0" cy="-10" r="12" fill="#F4C2C2" opacity="0.85"/>
+                    <circle cx="10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="6" cy="9" r="12" fill="#F4C2C2" opacity="0.85"/>
+                    <circle cx="-6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="-10" cy="-3" r="12" fill="#F7D6D6" opacity="0.85"/>
+                    <circle cx="0" cy="0" r="5" fill="#D4A373"/>
+                </g>
+                <g transform="translate(225, 42) scale(1.15)">
+                    <circle cx="0" cy="-10" r="12" fill="#F7D6D6" opacity="0.9"/>
+                    <circle cx="10" cy="-3" r="12" fill="#F4C2C2" opacity="0.9"/>
+                    <circle cx="6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="-6" cy="9" r="12" fill="#F4C2C2" opacity="0.9"/>
+                    <circle cx="-10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="0" cy="0" r="5" fill="#C59B6D"/>
+                </g>
+                <g transform="translate(358, 46)">
+                    <circle cx="0" cy="-10" r="12" fill="#F4C2C2" opacity="0.85"/>
+                    <circle cx="10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="6" cy="9" r="12" fill="#F7D6D6" opacity="0.85"/>
+                    <circle cx="-6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
+                    <circle cx="-10" cy="-3" r="12" fill="#F4C2C2" opacity="0.85"/>
+                    <circle cx="0" cy="0" r="5" fill="#D4A373"/>
+                </g>
+                <!-- Hanging Buds -->
+                <circle cx="32" cy="95" r="7" fill="#E8A5A2"/>
+                <circle cx="142" cy="115" r="8" fill="#F4C2C2"/>
+                <circle cx="238" cy="105" r="7" fill="#E8A5A2"/>
+                <circle cx="338" cy="115" r="8" fill="#F4C2C2"/>
+                <circle cx="415" cy="95" r="7" fill="#E8A5A2"/>
+            </g>
+
+            <!-- Botanical Wreath Frame -->
+            <g id="leaf-wreath">
+                <circle cx="125" cy="125" r="96" fill="none" stroke="#8FA382" stroke-width="2" stroke-dasharray="6 4" opacity="0.7"/>
+                <circle cx="125" cy="125" r="101" fill="none" stroke="#C59B6D" stroke-width="1" opacity="0.45"/>
+                <!-- Wreath Leaves Around Circle -->
+                <g fill="#8FA382" opacity="0.85">
+                    <ellipse cx="125" cy="26" rx="10" ry="4.5" transform="rotate(-10 125 26)"/>
+                    <ellipse cx="165" cy="34" rx="10" ry="4.5" transform="rotate(20 165 34)"/>
+                    <ellipse cx="200" cy="58" rx="10" ry="4.5" transform="rotate(45 200 58)"/>
+                    <ellipse cx="218" cy="95" rx="10" ry="4.5" transform="rotate(75 218 95)"/>
+                    <ellipse cx="220" cy="145" rx="10" ry="4.5" transform="rotate(105 220 145)"/>
+                    <ellipse cx="200" cy="190" rx="10" ry="4.5" transform="rotate(135 200 190)"/>
+                    <ellipse cx="165" cy="214" rx="10" ry="4.5" transform="rotate(165 165 214)"/>
+                    <ellipse cx="125" cy="223" rx="10" ry="4.5" transform="rotate(185 125 223)"/>
+                    <ellipse cx="80" cy="214" rx="10" ry="4.5" transform="rotate(210 80 214)"/>
+                    <ellipse cx="47" cy="190" rx="10" ry="4.5" transform="rotate(235 47 190)"/>
+                    <ellipse cx="30" cy="145" rx="10" ry="4.5" transform="rotate(265 30 145)"/>
+                    <ellipse cx="32" cy="95" rx="10" ry="4.5" transform="rotate(295 32 95)"/>
+                    <ellipse cx="52" cy="58" rx="10" ry="4.5" transform="rotate(320 52 58)"/>
+                    <ellipse cx="85" cy="34" rx="10" ry="4.5" transform="rotate(345 85 34)"/>
+                </g>
+                <!-- Small Pink Berries on Wreath -->
+                <g fill="#E8A5A2">
+                    <circle cx="145" cy="27" r="4"/>
+                    <circle cx="210" cy="75" r="4"/>
+                    <circle cx="213" cy="168" r="4"/>
+                    <circle cx="145" cy="222" r="4"/>
+                    <circle cx="62" cy="203" r="4"/>
+                    <circle cx="28" cy="120" r="4"/>
+                    <circle cx="65" cy="44" r="4"/>
+                </g>
+            </g>
+
+            <!-- Cute Fairy Left (Brunette) -->
+            <g id="fairy-brunette">
+                <ellipse cx="28" cy="45" rx="20" ry="11" transform="rotate(-25 28 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
+                <ellipse cx="62" cy="45" rx="20" ry="11" transform="rotate(25 62 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
+                <circle cx="45" cy="30" r="16" fill="#5C4033"/>
+                <circle cx="45" cy="32" r="12" fill="#FFE5D9"/>
+                <circle cx="40" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
+                <circle cx="50" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
+                <circle cx="41" cy="31" r="1.3" fill="#3B2820"/>
+                <circle cx="49" cy="31" r="1.3" fill="#3B2820"/>
+                <path d="M43,35 Q45,37 47,35" stroke="#3B2820" stroke-width="1" fill="none"/>
+                <circle cx="36" cy="21" r="4" fill="#F4C2C2"/>
+                <circle cx="45" cy="19" r="4.5" fill="#FFE5EC"/>
+                <circle cx="54" cy="21" r="4" fill="#F4C2C2"/>
+                <path d="M37,44 L53,44 L58,64 Q45,69 32,64 Z" fill="#E8A5A2"/>
+                <path d="M35,52 Q45,58 55,52" stroke="#9CAF88" stroke-width="3" fill="none"/>
+            </g>
+
+            <!-- Cute Fairy Right (Blonde) -->
+            <g id="fairy-blonde">
+                <ellipse cx="28" cy="45" rx="20" ry="11" transform="rotate(-25 28 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
+                <ellipse cx="62" cy="45" rx="20" ry="11" transform="rotate(25 62 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
+                <circle cx="45" cy="15" r="7" fill="#D4A373"/>
+                <circle cx="45" cy="30" r="15" fill="#D4A373"/>
+                <circle cx="45" cy="32" r="12" fill="#FFE5D9"/>
+                <circle cx="40" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
+                <circle cx="50" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
+                <circle cx="41" cy="31" r="1.3" fill="#3B2820"/>
+                <circle cx="49" cy="31" r="1.3" fill="#3B2820"/>
+                <path d="M43,35 Q45,37 47,35" stroke="#3B2820" stroke-width="1" fill="none"/>
+                <circle cx="37" cy="21" r="3.8" fill="#F4C2C2"/>
+                <circle cx="45" cy="19" r="4" fill="#E8A5A2"/>
+                <circle cx="53" cy="21" r="3.8" fill="#F4C2C2"/>
+                <path d="M37,44 L53,44 L60,65 Q45,70 30,65 Z" fill="#F4C2C2"/>
+            </g>
+
+            <!-- Pink Watercolor Butterfly -->
+            <g id="pink-butterfly">
+                <ellipse cx="16" cy="18" rx="12" ry="9" transform="rotate(-30 16 18)" fill="#F4C2C2" opacity="0.9"/>
+                <ellipse cx="32" cy="18" rx="12" ry="9" transform="rotate(30 32 18)" fill="#F4C2C2" opacity="0.9"/>
+                <ellipse cx="18" cy="28" rx="8" ry="6" transform="rotate(20 18 28)" fill="#E8A5A2" opacity="0.85"/>
+                <ellipse cx="30" cy="28" rx="8" ry="6" transform="rotate(-20 30 28)" fill="#E8A5A2" opacity="0.85"/>
+                <line x1="24" y1="12" x2="24" y2="33" stroke="#7A5C58" stroke-width="1.8" stroke-linecap="round"/>
+            </g>
+
+            <!-- Pink Ribbon Mushroom Illustration -->
+            <g id="fairy-mushroom">
+                <ellipse cx="120" cy="140" rx="85" ry="12" fill="#9CAF88" opacity="0.45"/>
+                <path d="M58,140 Q60,115 64,115 Q68,115 70,140 Z" fill="#F5EBE6"/>
+                <path d="M42,118 Q64,88 86,118 Z" fill="#E8A5A2"/>
+                <circle cx="56" cy="108" r="3.5" fill="#FFF" opacity="0.8"/>
+                <circle cx="70" cy="111" r="2.5" fill="#FFF" opacity="0.8"/>
+                <path d="M170,140 Q172,110 176,110 Q180,110 182,140 Z" fill="#F5EBE6"/>
+                <path d="M154,113 Q176,82 198,113 Z" fill="#F4C2C2"/>
+                <circle cx="170" cy="102" r="3" fill="#FFF" opacity="0.8"/>
+                <circle cx="184" cy="106" r="3.5" fill="#FFF" opacity="0.8"/>
+                <path d="M104,140 Q108,78 120,78 Q132,78 136,140 Z" fill="#F3E5AB" opacity="0.6"/>
+                <path d="M106,140 Q110,80 120,80 Q130,80 134,140 Z" fill="#FFF8F0"/>
+                <path d="M60,86 Q120,15 180,86 Q150,94 120,90 Q90,94 60,86 Z" fill="#E29592"/>
+                <circle cx="95" cy="65" r="7" fill="#FFF" opacity="0.85"/>
+                <circle cx="122" cy="50" r="8" fill="#FFF" opacity="0.85"/>
+                <circle cx="150" cy="68" r="6.5" fill="#FFF" opacity="0.85"/>
+                <circle cx="80" cy="78" r="5" fill="#FFF" opacity="0.85"/>
+                <circle cx="135" cy="75" r="5.5" fill="#FFF" opacity="0.85"/>
+                <ellipse cx="106" cy="45" rx="15" ry="9" transform="rotate(-15 106 45)" fill="#F9DCE0" stroke="#D1817E" stroke-width="1"/>
+                <ellipse cx="134" cy="45" rx="15" ry="9" transform="rotate(15 134 45)" fill="#F9DCE0" stroke="#D1817E" stroke-width="1"/>
+                <path d="M116,48 L108,68 M124,48 L132,68" stroke="#F9DCE0" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="120" cy="46" r="5.5" fill="#E8A5A2"/>
+            </g>
+        </defs>
+    </svg>
+
+    <!-- Soft Falling Petals Container -->
+    <div class="petals-container" id="petals"></div>
+
+    <!-- =================================================================
+         COVER OVERLAY (LOCK SCREEN)
+    ================================================================== -->
+    <div id="cover-overlay">
+        <svg class="floral-header-svg" viewBox="0 0 450 135">
+            <use href="#hanging-floral"></use>
+        </svg>
+
+        <div class="cover-content">
+            <h1 class="script-title">Tasyakuran Aqiqah</h1>
+
+            <div class="baby-hero-wrapper">
+                <svg class="fairy-badge fairy-left" viewBox="0 0 90 80">
+                    <use href="#fairy-brunette"></use>
+                </svg>
+
+                <svg class="wreath-svg" viewBox="0 0 250 250">
+                    <use href="#leaf-wreath"></use>
+                </svg>
+
+                <div class="baby-photo-circle">
+                    <!-- [GANTI FOTO BAYI SAMPUL DI SINI] -->
+                    <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=600&q=80" alt="Baby Aisyah">
+                </div>
+
+                <svg class="fairy-badge fairy-right" viewBox="0 0 90 80">
+                    <use href="#fairy-blonde"></use>
+                </svg>
+            </div>
+
+            <div class="baby-short-name">Aisyah</div>
+            <div class="cover-date">11 . 10 . 2026</div>
+
+            <div class="recipient-box">
+                Kepada Yth.<br>
+                Bapak/Ibu/Saudara/i<br>
+                <span class="recipient-name" id="guest-name">Tamu Undangan</span>
+            </div>
+
+            <button class="btn-primary" id="btn-open-invite">
+                <i class="fa-regular fa-envelope"></i> Buka Undangan
+            </button>
+        </div>
+
+        <div style="height: 10px;"></div>
+    </div>
+
+    <!-- =================================================================
+         MAIN INVITATION CONTAINER
+    ================================================================== -->
+    <div class="app-container">
+
+        <!-- Top Hanging Watercolor Floral (FIXED VIEWBOX) -->
+        <svg class="floral-header-svg" viewBox="0 0 450 135">
+            <use href="#hanging-floral"></use>
+        </svg>
+
+        <!-- SECTION 1: HERO & BABY STATS -->
+        <section id="sec-home" class="reveal active" style="padding-top: 5px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 0 6px;">
+                <svg class="butterfly-accent" viewBox="0 0 48 48"><use href="#pink-butterfly"></use></svg>
+                <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                <svg class="butterfly-accent" viewBox="0 0 48 48" style="animation-delay:1.2s;"><use href="#pink-butterfly"></use></svg>
+            </div>
+
+            <p class="salam">Assalamu'alaikum<br>Warahmatullahi Wabarakatuh</p>
+            <p class="intro-text">
+                Maha Suci Allah yang telah memberikan nikmat sehat dan kesempatan. Ya Allah, semoga ridho dan berkah-Mu senantiasa mengiringi acara Aqiqah Putri kami:
+            </p>
+
+            <div class="baby-hero-wrapper">
+                <svg class="wreath-svg" viewBox="0 0 250 250">
+                    <use href="#leaf-wreath"></use>
+                </svg>
+                <div class="baby-photo-circle">
+                    <!-- [GANTI FOTO BAYI TENGAH DI SINI] -->
+                    <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=600&q=80" alt="Aisyah Rumaisha Aghnia">
+                </div>
+            </div>
+
+            <h2 class="baby-full-name">Aisyah Rumaisha Aghnia</h2>
+            <div class="parents-info">
+                Anak ke-2 dari<br>
+                <strong>Bapak Iwan &amp; Ibu Auva</strong>
+            </div>
+
+            <!-- 4 Birth Details Icons (Sesuai Data Kelahiran Aisyah) -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                    <span class="stat-value">09 . 09 . 2026</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-regular fa-hospital"></i></div>
+                    <span class="stat-value">Takengon</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-ruler-vertical"></i></div>
+                    <span class="stat-value">52 cm</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-weight-scale"></i></div>
+                    <span class="stat-value">3.5 kg</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botanical Meadow Divider (FIXED: ViewBox 0 0 450 135 agar bunga tidak terpotong) -->
+        <div class="floral-divider">
+            <svg viewBox="0 0 450 135">
+                <use href="#hanging-floral" transform="scale(1, -1) translate(0, -135)"></use>
+            </svg>
+        </div>
+
+        <!-- SECTION 2: COUNTDOWN & EVENT ARCH CARD -->
+        <section id="sec-event" class="reveal">
+            <div style="text-align:left; padding-left:10px; margin-bottom:-10px;">
+                <svg class="butterfly-accent" viewBox="0 0 48 48"><use href="#pink-butterfly"></use></svg>
+            </div>
+
+            <h2 class="script-title">Aqiqah Penuh Berkah</h2>
+
+            <div class="countdown-grid">
+                <div class="countdown-box">
+                    <div class="countdown-num" id="cd-days">00</div>
+                    <div class="countdown-label">Hari</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num" id="cd-hours">00</div>
+                    <div class="countdown-label">Jam</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num" id="cd-mins">00</div>
+                    <div class="countdown-label">Menit</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num" id="cd-secs">00</div>
+                    <div class="countdown-label">Detik</div>
+                </div>
+            </div>
+
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Tasyakuran+Aqiqah+Aisyah+Rumaisha+Aghnia&dates=20261011T013000Z/20261011T060000Z&details=Acara+Tasyakuran+Aqiqah+Anak+ke-2+dari+Bapak+Iwan+%26+Ibu+Auva&location=Bies+Penantanan,+Takengon" target="_blank" class="btn-primary" style="margin-bottom: 22px;">
+                <i class="fa-regular fa-calendar-plus"></i> CATAT TANGGALNYA
+            </a>
+
+            <p class="intro-text" style="margin-bottom: 10px;">
+                Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara aqiqah putri kami, yang insyaAllah akan diselenggarakan pada:
+            </p>
+
+            <!-- Arch Tasyakuran Card with Fairies on Top -->
+            <div class="arch-section-wrapper">
+                <div class="arch-top-fairies">
+                    <svg width="75" height="70" viewBox="0 0 90 80"><use href="#fairy-brunette"></use></svg>
+                    <svg width="82" height="75" viewBox="0 0 90 80"><use href="#fairy-blonde"></use></svg>
+                    <svg width="75" height="70" viewBox="0 0 90 80"><use href="#fairy-brunette"></use></svg>
+                </div>
+
+                <div class="arch-card">
+                    <div class="mosque-icon"><i class="fa-solid fa-mosque"></i></div>
+                    <h3 class="script-title">Tasyakuran</h3>
+
+                    <div class="event-month">OKTOBER</div>
+
+                    <div class="event-date-row">
+                        <div class="date-side">MINGGU</div>
+                        <div class="date-center">11</div>
+                        <div class="date-side">2026</div>
+                    </div>
+
+                    <div class="event-time">Pukul 08.30 WIB s/d Selesai</div>
+
+                    <div class="location-pin"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="event-address">Bies Penantanan, Takengon</div>
+
+                    <!-- Embedded Google Maps Box (Bies Penantanan, Takengon) -->
+                    <div class="map-card">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Bies%20Penantanan%20Takengon%20Aceh%20Tengah&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Bies+Penantanan+Takengon+Aceh+Tengah" target="_blank" class="btn-map">
+                            <i class="fa-solid fa-location-dot"></i> Google Map
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: DOA & PHOTO GALLERY -->
+        <section id="sec-gallery" class="reveal">
+            <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                <svg width="72" height="72" viewBox="0 0 90 80"><use href="#fairy-brunette"></use></svg>
+                <svg class="mushroom-illustration" viewBox="0 0 240 160">
+                    <use href="#fairy-mushroom"></use>
+                </svg>
+                <svg width="72" height="72" viewBox="0 0 90 80"><use href="#fairy-blonde"></use></svg>
+            </div>
+
+            <h3 class="doa-title">Do'a Untuk Anak Kami</h3>
+            <p class="doa-quote">
+                "Ya Allah, muliakanlah anak kami, berkahkanlah umurnya, terangilah hatinya, teguhkanlah imannya, perbaikilah amal perbuatannya, lapangkanlah rezekinya, dekatkanlah kepada kebaikan dan jauhkanlah dari keburukan.<br>
+                Aamiin Ya Rabbal Alamin."
+            </p>
+
+            <div class="stroller-divider">
+                <i class="fa-solid fa-baby-carriage"></i>
+            </div>
+
+            <h2 class="script-title">Galeri Photo</h2>
+
+            <div class="gallery-grid">
+                <!-- [GANTI FOTO GALERI 1 DI SINI] -->
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=600&q=80" alt="Galeri Baby 1">
+                </div>
+                <!-- [GANTI FOTO GALERI 2 DI SINI] -->
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=600&q=80" alt="Galeri Baby 2">
+                </div>
+                <!-- [GANTI FOTO GALERI 3 DI SINI] -->
+                <div class="gallery-item wide" onclick="openLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80" alt="Galeri Baby 3">
+                </div>
+            </div>
+
+            <!-- Quranic Verse Banner (QS. Al-Furqan Ayat 74) -->
+            <div class="verse-banner">
+                <div class="verse-arabic">
+                    وَالَّذِيْنَ يَقُوْلُوْنَ رَبَّنَا هَبْ لَنَا مِنْ اَزْوَاجِنَا وَذُرِّيّٰتِنَا قُرَّةَ اَعْيُنٍ وَّاجْعَلْنَا لِلْمُتَّقِيْنَ اِمَامًا
+                </div>
+                <p class="verse-translation">
+                    "Dan orang-orang yang berkata, 'Ya Tuhan kami, anugerahkanlah kepada kami pasangan kami dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa.'"
+                </p>
+                <div class="verse-source">- Qs. Al – Furqan Ayat 74 -</div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: WISHES & RSVP (SUPABASE PERMANEN, TANPA CONTOH KOMENTAR) -->
+        <section id="sec-wishes" class="reveal">
+            <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                <svg width="68" height="68" viewBox="0 0 90 80"><use href="#fairy-brunette"></use></svg>
+                <svg class="mushroom-illustration" viewBox="0 0 240 160" style="width:170px;">
+                    <use href="#fairy-mushroom"></use>
+                </svg>
+                <svg width="68" height="68" viewBox="0 0 90 80"><use href="#fairy-blonde"></use></svg>
+            </div>
+
+            <h2 class="script-title" style="margin-bottom:2px;">Wishes</h2>
+            <p class="intro-text" style="margin-bottom:14px;">Ucapan dan doa yang terbaik<br>untuk putri kami</p>
+
+            <div class="wishes-card">
+                <div class="comment-count-title"><span id="total-comments">0</span> Komentar</div>
+
+                <div class="rsvp-tally-row">
+                    <div class="tally-box hadir">
+                        <div class="tally-num" id="count-hadir">0</div>
+                        <div class="tally-label">Hadir</div>
+                    </div>
+                    <div class="tally-box tidak-hadir">
+                        <div class="tally-num" id="count-tidak">0</div>
+                        <div class="tally-label">Tidak Hadir</div>
+                    </div>
+                </div>
+
+                <form id="wishes-form">
+                    <div class="form-group">
+                        <input type="text" id="input-name" class="form-control" placeholder="Nama" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="input-wish" class="form-control" placeholder="Wishes / Ucapan & Doa" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <select id="input-rsvp" class="form-control" required>
+                            <option value="" disabled selected>Konfirmasi Kehadiran</option>
+                            <option value="Hadir">Hadir</option>
+                            <option value="Tidak Hadir">Tidak Hadir</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="btn-submit-wish" class="btn-send">Send</button>
+                </form>
+
+                <!-- Daftar Komentar Kosong dari Contoh, Langsung Mengambil dari Supabase -->
+                <div class="wishes-list" id="wishes-list">
+                    <p style="text-align:center; font-size:0.78rem; color:var(--text-muted); padding: 14px 0;">Memuat ucapan...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: CLOSING / THANK YOU -->
+        <section class="reveal" style="padding: 15px 0 35px;">
+            <!-- Bunga Penutup Atas (FIXED: Tidak terpotong) -->
+            <svg class="floral-header-svg" viewBox="0 0 450 135" style="margin-bottom: 5px;">
+                <use href="#hanging-floral"></use>
+            </svg>
+
+            <div style="padding: 0 22px;">
+                <div class="baby-hero-wrapper">
+                    <svg class="fairy-badge fairy-left" viewBox="0 0 90 80">
+                        <use href="#fairy-brunette"></use>
+                    </svg>
+                    <svg class="wreath-svg" viewBox="0 0 250 250">
+                        <use href="#leaf-wreath"></use>
+                    </svg>
+                    <div class="baby-photo-circle">
+                        <!-- [GANTI FOTO BAYI PENUTUP DI SINI] -->
+                        <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=600&q=80" alt="Baby Aisyah">
+                    </div>
+                    <svg class="fairy-badge fairy-right" viewBox="0 0 90 80">
+                        <use href="#fairy-blonde"></use>
+                    </svg>
+                </div>
+
+                <p class="closing-text">
+                    Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i, berkenan hadir dan memberikan do'a kepada putri kami.<br><br>
+                    Atas perhatiannya, Kami ucapkan terima kasih.
+                </p>
+
+                <p class="salam" style="margin-top: 14px;">
+                    Wassalamu'alaikum<br>Warahmatullahi Wabarakatuh
+                </p>
+
+                <div class="sign-off">
+                    Hormat kami yang mengundang,
+                    <div class="couple-script">Auva &amp; Iwan</div>
+                </div>
+
+                <div style="display:flex; justify-content:center; align-items:flex-end; gap:8px; margin-top: 15px;">
+                    <svg width="65" height="65" viewBox="0 0 90 80"><use href="#fairy-blonde"></use></svg>
+                    <svg viewBox="0 0 240 160" style="width:150px;"><use href="#fairy-mushroom"></use></svg>
+                    <svg width="65" height="65" viewBox="0 0 90 80"><use href="#fairy-brunette"></use></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Audio Toggle Button -->
+        <button class="audio-btn" id="audio-toggle" title="Putar/Jeda Musik">
+            <i class="fa-solid fa-volume-high" id="audio-icon"></i>
+        </button>
+
+        <!-- [GANTI MUSIK LATAR MP3 DI SINI] -->
+        <audio id="bg-music" loop preload="auto">
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lullaby-113224.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- Bottom Floating Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="#sec-home" class="nav-link active" data-target="sec-home" title="Beranda">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            <a href="#sec-event" class="nav-link" data-target="sec-event" title="Acara & Lokasi">
+                <i class="fa-regular fa-calendar-days"></i>
+            </a>
+            <a href="#sec-gallery" class="nav-link" data-target="sec-gallery" title="Doa & Galeri">
+                <i class="fa-regular fa-images"></i>
+            </a>
+            <a href="#sec-wishes" class="nav-link" data-target="sec-wishes" title="Ucapan & Doa">
+                <i class="fa-regular fa-comment-dots"></i>
+            </a>
+        </nav>
+
+    </div>
+
+    <!-- Lightbox Modal for Gallery -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Preview">
+    </div>
+
+    <!-- =================================================================
+         MODAL ADMIN TAMU UNDANGAN (MUNCUL SAAT AKSES /?admin=1)
+    ================================================================== -->
+    <div class="admin-modal" id="admin-modal">
+        <div class="admin-box">
+            <div class="admin-header">
+                <div>
+                    <strong style="font-size:0.95rem;">Dashboard Admin Tamu</strong>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Tersimpan permanen di Supabase</div>
+                </div>
+                <button onclick="document.getElementById('admin-modal').classList.remove('active')" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted);">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="admin-guest-form" style="display:flex; gap:8px;">
+                <input type="text" id="new-guest-input" class="form-control" placeholder="Nama Tamu (mis: Budi & Keluarga)" required style="padding:8px 12px; font-size:0.8rem;">
+                <button type="submit" class="btn-send" style="padding:8px 16px; white-space:nowrap; background:var(--dusty-rose);">+ Tambah</button>
+            </form>
+
+            <div class="admin-guest-list" id="admin-guest-list">
+                <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:15px 0;">Memuat daftar tamu...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================
+         JAVASCRIPT & INTEGRASI SUPABASE
+    ================================================================== -->
+    <script>
+        // ===============================================================
+        // [PENTING] MASUKKAN URL & ANON KEY SUPABASE KAMU DI SINI
+        // ===============================================================
+        const SUPABASE_URL = 'https://flfcvfidvqwnwozzhzun.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZmN2ZmlkdnF3bndvenpoenVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMjkxNzUsImV4cCI6MjEwNjYwNTE3NX0.3XB128uvPH2MJ5YRFEPP7AGrfCZ4gH_p9JrrjH5APd0';
+
+        let supabaseClient = null;
+        if (SUPABASE_URL.startsWith('http')) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        // 1. Baca Nama Tamu (?to=Nama+Tamu) & Mode Admin (?admin=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestParam = urlParams.get('to');
+        const isAdmin = urlParams.get('admin') === '1';
+
+        if (guestParam) {
+            document.getElementById('guest-name').textContent = guestParam;
+            document.getElementById('input-name').value = guestParam;
+        }
+
+        if (isAdmin) {
+            document.getElementById('admin-modal').classList.add('active');
+            loadAdminGuests();
+        }
+
+        // 2. Buka Undangan & Putar Musik
+        const coverOverlay = document.getElementById('cover-overlay');
+        const btnOpenInvite = document.getElementById('btn-open-invite');
+        const bgMusic = document.getElementById('bg-music');
+        const audioToggle = document.getElementById('audio-toggle');
+        const audioIcon = document.getElementById('audio-icon');
+        let isPlaying = false;
+
+        btnOpenInvite.addEventListener('click', () => {
+            coverOverlay.classList.add('open');
+            document.body.classList.remove('locked');
+            playAudio();
+        });
+
+        function playAudio() {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                audioToggle.classList.add('playing');
+                audioIcon.className = 'fa-solid fa-volume-high';
+            }).catch(() => {
+                isPlaying = false;
+                audioIcon.className = 'fa-solid fa-volume-xmark';
+            });
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                audioToggle.classList.remove('playing');
+                audioIcon.className = 'fa-solid fa-volume-xmark';
+            } else {
+                playAudio();
+            }
+        });
+
+        // 3. Countdown Timer ke Minggu, 11 Oktober 2026 Pukul 08:30 WIB
+        const targetDate = new Date('2026-10-11T08:30:00+07:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('cd-days').textContent = '00';
+                document.getElementById('cd-hours').textContent = '00';
+                document.getElementById('cd-mins').textContent = '00';
+                document.getElementById('cd-secs').textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+            document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+            document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 4. Wishes & RSVP Permanen dengan Supabase
+        const wishesForm = document.getElementById('wishes-form');
+        const wishesList = document.getElementById('wishes-list');
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        async function loadWishes() {
+            if (!supabaseClient) {
+                wishesList.innerHTML = `<p style="text-align:center; font-size:0.76rem; color:#b66663; padding: 12px;">Masukkan SUPABASE_URL & SUPABASE_ANON_KEY di kode HTML agar komentar tampil permanen.</p>`;
+                return;
+            }
+
+            const { data, error } = await supabaseClient
+                .from('wishes')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                wishesList.innerHTML = `<p style="text-align:center; font-size:0.76rem; color:#D9535E;">Gagal memuat komentar: ${escapeHtml(error.message)}</p>`;
+                return;
+            }
+
+            const hadirCount = data.filter(d => d.attendance === 'Hadir').length;
+            const tidakCount = data.filter(d => d.attendance === 'Tidak Hadir').length;
+
+            document.getElementById('total-comments').textContent = data.length;
+            document.getElementById('count-hadir').textContent = hadirCount;
+            document.getElementById('count-tidak').textContent = tidakCount;
+
+            if (data.length === 0) {
+                wishesList.innerHTML = `<p style="text-align:center; font-size:0.78rem; color:var(--text-muted); padding: 16px 0;">Belum ada ucapan. Jadilah yang pertama memberikan doa!</p>`;
+                return;
+            }
+
+            wishesList.innerHTML = data.map(item => {
+                const badgeClass = item.attendance === 'Hadir' ? 'hadir' : 'tidak';
+                const dateStr = new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                return `
+                    <div class="wish-item">
+                        <div class="wish-header">
+                            <span class="wish-author">${escapeHtml(item.name)}</span>
+                            <span class="wish-badge ${badgeClass}">${escapeHtml(item.attendance)}</span>
+                        </div>
+                        <p class="wish-message">${escapeHtml(item.message)}</p>
+                        <span class="wish-date">${dateStr}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        wishesForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!supabaseClient) {
+                alert('Silakan isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah kode HTML terlebih dahulu.');
+                return;
+            }
+
+            const name = document.getElementById('input-name').value.trim();
+            const message = document.getElementById('input-wish').value.trim();
+            const attendance = document.getElementById('input-rsvp').value;
+            const btn = document.getElementById('btn-submit-wish');
+
+            if (!name || !message || !attendance) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Mengirim...';
+
+            const { error } = await supabaseClient
+                .from('wishes')
+                .insert([{ name, message, attendance }]);
+
+            btn.disabled = false;
+            btn.textContent = 'Send';
+
+            if (error) {
+                alert('Gagal mengirim ucapan: ' + error.message);
+            } else {
+                document.getElementById('input-wish').value = '';
+                document.getElementById('input-rsvp').value = '';
+                loadWishes();
+            }
+        });
+
+        // 5. Fungsi Dashboard Admin (/?admin=1)
+        const adminGuestForm = document.getElementById('admin-guest-form');
+        const adminGuestList = document.getElementById('admin-guest-list');
+
+        async function loadAdminGuests() {
+            if (!supabaseClient) {
+                adminGuestList.innerHTML = `<p style="font-size:0.75rem; color:#D9535E; text-align:center;">Token Supabase belum diisi di kode HTML.</p>`;
+                return;
+            }
+
+            const { data, error } = await supabaseClient
+                .from('guests')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                adminGuestList.innerHTML = `<p style="font-size:0.75rem; color:#D9535E;">Gagal memuat: ${escapeHtml(error.message)}</p>`;
+                return;
+            }
+
+            if (data.length === 0) {
+                adminGuestList.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted); text-align:center; padding:12px 0;">Belum ada nama tamu.</p>`;
+                return;
+            }
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            adminGuestList.innerHTML = data.map(g => {
+                const link = `${baseUrl}?to=${encodeURIComponent(g.name)}`;
+                return `
+                    <div class="admin-guest-item">
+                        <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:8px;">
+                            <strong>${escapeHtml(g.name)}</strong>
+                        </div>
+                        <div style="display:flex; gap:5px; flex-shrink:0;">
+                            <button class="btn-sm" style="background:var(--sage-green);" onclick="copyGuestLink('${link}')">
+                                <i class="fa-regular fa-copy"></i> Salin Link
+                            </button>
+                            <button class="btn-sm" style="background:#D9535E;" onclick="deleteGuest(${g.id})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        adminGuestForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!supabaseClient) {
+                alert('Isi SUPABASE_URL dan SUPABASE_ANON_KEY terlebih dahulu!');
+                return;
+            }
+            const input = document.getElementById('new-guest-input');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const { error } = await supabaseClient
+                .from('guests')
+                .insert([{ name, slug: encodeURIComponent(name) }]);
+
+            if (error) {
+                alert('Gagal menambah tamu: ' + error.message);
+            } else {
+                input.value = '';
+                loadAdminGuests();
+            }
+        });
+
+        async function deleteGuest(id) {
+            if (!confirm('Hapus nama tamu ini?')) return;
+            await supabaseClient.from('guests').delete().eq('id', id);
+            loadAdminGuests();
+        }
+
+        function copyGuestLink(url) {
+            navigator.clipboard.writeText(url);
+            alert('Link berhasil disalin:\n' + url);
+        }
+
+        // 6. Scroll Reveal & Active Bottom Nav Highlighting
+        const reveals = document.querySelectorAll('.reveal');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            const triggerBottom = window.innerHeight * 0.88;
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < triggerBottom) {
+                    el.classList.add('active');
+                }
+            });
+
+            let currentSection = 'sec-home';
+            sections.forEach(sec => {
+                const secTop = sec.offsetTop - 220;
+                if (window.scrollY >= secTop) {
+                    currentSection = sec.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 7. Gallery Lightbox
+        function openLightbox(element) {
+            const imgSrc = element.querySelector('img').src;
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // 8. Create Subtle Falling Petals
+        const petalsContainer = document.getElementById('petals');
+        for (let i = 0; i < 12; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const size = Math.random() * 8 + 7;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${Math.random() * 100}%`;
+            petal.style.animationDuration = `${Math.random() * 6 + 7}s`;
+            petal.style.animationDelay = `${Math.random() * 5}s`;
+            petalsContainer.appendChild(petal);
+        }
+
+        // Muat komentar dari Supabase saat halaman dibuka
+        loadWishes();
+    </script>
+</body>
+</html>
