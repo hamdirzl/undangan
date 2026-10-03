@@ -1543,26 +1543,41 @@
         <img id="lightbox-img" src="" alt="Preview">
     </div>
 
+
     <!-- =================================================================
-         MODAL ADMIN TAMU UNDANGAN (MUNCUL SAAT AKSES /?admin=1)
+         MODAL ADMIN TAMU UNDANGAN (SUPPORT INPUT BANYAK NAMA SEKALIGUS)
     ================================================================== -->
     <div class="admin-modal" id="admin-modal">
-        <div class="admin-box">
+        <div class="admin-box" style="max-width: 420px;">
             <div class="admin-header">
                 <div>
                     <strong style="font-size:0.95rem;">Dashboard Admin Tamu</strong>
-                    <div style="font-size:0.7rem; color:var(--text-muted);">Tersimpan permanen di Supabase</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Paste banyak nama sekaligus (1 baris = 1 nama)</div>
                 </div>
                 <button onclick="document.getElementById('admin-modal').classList.remove('active')" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted);">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <form id="admin-guest-form" style="display:flex; gap:8px;">
-                <input type="text" id="new-guest-input" class="form-control" placeholder="Nama Tamu (mis: Budi & Keluarga)" required style="padding:8px 12px; font-size:0.8rem;">
-                <button type="submit" class="btn-send" style="padding:8px 16px; white-space:nowrap; background:var(--dusty-rose);">+ Tambah</button>
+            <!-- Form Bulk Input (Bisa Paste Banyak Baris) -->
+            <form id="admin-guest-form" style="display:flex; flex-direction:column; gap:8px;">
+                <textarea id="new-guest-input" class="form-control" rows="4" placeholder="Ketik atau Paste daftar nama tamu di sini...&#10;Contoh:&#10;Budi & Keluarga&#10;Ibu Siti Aminah&#10;Rina & Partner" required style="padding:10px 12px; font-size:0.8rem; min-height:95px;"></textarea>
+                <div style="display:flex; gap:8px;">
+                    <button type="submit" id="btn-save-guests" class="btn-send" style="flex:1; padding:9px 14px; background:var(--dusty-rose);">
+                        <i class="fa-solid fa-users"></i> + Simpan Semua Nama
+                    </button>
+                    <button type="button" onclick="copyAllLinks()" class="btn-send" style="padding:9px 12px; background:var(--sage-green);" title="Salin semua daftar link">
+                        <i class="fa-regular fa-copy"></i> Salin Semua
+                    </button>
+                </div>
             </form>
 
+            <!-- Pencarian Tamu -->
+            <div style="margin-top: 10px;">
+                <input type="text" id="search-guest" oninput="filterGuests()" class="form-control" placeholder="🔍 Cari nama tamu..." style="padding:7px 12px; font-size:0.76rem;">
+            </div>
+
+            <!-- Daftar Tamu -->
             <div class="admin-guest-list" id="admin-guest-list">
                 <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:15px 0;">Memuat daftar tamu...</p>
             </div>
@@ -1750,8 +1765,10 @@
         });
 
         // 5. Fungsi Dashboard Admin (/?admin=1)
+        // 5. Fungsi Dashboard Admin (Support Bulk Insert & Kirim WA)
         const adminGuestForm = document.getElementById('admin-guest-form');
         const adminGuestList = document.getElementById('admin-guest-list');
+        let allGuestsData = [];
 
         async function loadAdminGuests() {
             if (!supabaseClient) {
@@ -1769,24 +1786,33 @@
                 return;
             }
 
-            if (data.length === 0) {
+            allGuestsData = data || [];
+            renderAdminGuests(allGuestsData);
+        }
+
+        function renderAdminGuests(guests) {
+            if (guests.length === 0) {
                 adminGuestList.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted); text-align:center; padding:12px 0;">Belum ada nama tamu.</p>`;
                 return;
             }
 
             const baseUrl = window.location.origin + window.location.pathname;
-            adminGuestList.innerHTML = data.map(g => {
+            adminGuestList.innerHTML = guests.map(g => {
                 const link = `${baseUrl}?to=${encodeURIComponent(g.name)}`;
+                const safeName = escapeHtml(g.name);
                 return `
                     <div class="admin-guest-item">
                         <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:8px;">
-                            <strong>${escapeHtml(g.name)}</strong>
+                            <strong>${safeName}</strong>
                         </div>
                         <div style="display:flex; gap:5px; flex-shrink:0;">
-                            <button class="btn-sm" style="background:var(--sage-green);" onclick="copyGuestLink('${link}')">
-                                <i class="fa-regular fa-copy"></i> Salin Link
+                            <button class="btn-sm" style="background:#25D366;" onclick="shareWA('${safeName.replace(/'/g, "\\'")}', '${link}')" title="Kirim ke WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i> WA
                             </button>
-                            <button class="btn-sm" style="background:#D9535E;" onclick="deleteGuest(${g.id})">
+                            <button class="btn-sm" style="background:var(--sage-green);" onclick="copyGuestLink('${link}')" title="Salin Link Saja">
+                                <i class="fa-regular fa-copy"></i> Link
+                            </button>
+                            <button class="btn-sm" style="background:#D9535E;" onclick="deleteGuest(${g.id})" title="Hapus">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -1795,24 +1821,52 @@
             }).join('');
         }
 
+        // Filter Pencarian Nama Tamu di Panel Admin
+        function filterGuests() {
+            const keyword = document.getElementById('search-guest').value.toLowerCase();
+            const filtered = allGuestsData.filter(g => g.name.toLowerCase().includes(keyword));
+            renderAdminGuests(filtered);
+        }
+
+        // Simpan Banyak Nama Sekaligus (Dipisahkan dengan Enter / Baris Baru)
         adminGuestForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!supabaseClient) {
                 alert('Isi SUPABASE_URL dan SUPABASE_ANON_KEY terlebih dahulu!');
                 return;
             }
-            const input = document.getElementById('new-guest-input');
-            const name = input.value.trim();
-            if (!name) return;
+
+            const textarea = document.getElementById('new-guest-input');
+            const btn = document.getElementById('btn-save-guests');
+
+            // Pisahkan per baris & hapus baris yang kosong
+            const names = textarea.value
+                .split('\n')
+                .map(n => n.trim())
+                .filter(n => n.length > 0);
+
+            if (names.length === 0) return;
+
+            btn.disabled = true;
+            btn.textContent = `Menyimpan ${names.length} nama...`;
+
+            // Siapkan array objek untuk di-insert sekaligus ke Supabase
+            const payload = names.map(name => ({
+                name: name,
+                slug: encodeURIComponent(name)
+            }));
 
             const { error } = await supabaseClient
                 .from('guests')
-                .insert([{ name, slug: encodeURIComponent(name) }]);
+                .insert(payload);
+
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-users"></i> + Simpan Semua Nama`;
 
             if (error) {
                 alert('Gagal menambah tamu: ' + error.message);
             } else {
-                input.value = '';
+                textarea.value = '';
                 loadAdminGuests();
             }
         });
@@ -1828,6 +1882,24 @@
             alert('Link berhasil disalin:\n' + url);
         }
 
+        // Fitur Kirim Langsung ke WhatsApp Lengkap dengan Kata Pengantar
+        function shareWA(guestName, inviteUrl) {
+            const text = `Assalamu'alaikum Wr. Wb.\nKepada Yth. *${guestName}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara *Tasyakuran Aqiqah* putri kedua kami:\n\n🌸 *Aisyah Rumaisha Aghnia* 🌸\n\nInfo lengkap acara & lokasi dapat dilihat pada link undangan berikut:\n${inviteUrl}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nKami yang mengundang,\n*Auva & Iwan*`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Fitur Salin Semua Link Sekaligus (Untuk disimpan di Notes)
+        function copyAllLinks() {
+            if (allGuestsData.length === 0) {
+                alert('Belum ada daftar tamu untuk disalin.');
+                return;
+            }
+            const baseUrl = window.location.origin + window.location.pathname;
+            const allText = allGuestsData.map(g => `${g.name}: ${baseUrl}?to=${encodeURIComponent(g.name)}`).join('\n');
+            navigator.clipboard.writeText(allText);
+            alert(`Berhasil menyalin ${allGuestsData.length} link tamu sekaligus!`);
+        }
+        
         // 6. Scroll Reveal & Active Bottom Nav Highlighting
         const reveals = document.querySelectorAll('.reveal');
         const navLinks = document.querySelectorAll('.nav-link');
