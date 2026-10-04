@@ -15,15 +15,15 @@
 
     <style>
         :root {
-            --bg-cream: #FFFDFB;
-            --bg-soft-pink: #FDF5F5;
-            --dusty-rose: #D1817E;
-            --dusty-rose-dark: #B66663;
-            --dusty-rose-light: #E8B4B2;
-            --sage-green: #8FA382;
-            --text-dark: #4A3B3B;
-            --text-muted: #846C6C;
-            --gold-accent: #C59B6D;
+            --bg-cream: #FAF8FF;          /* Putih kebiruan/ungu sangat lembut */
+            --bg-soft-pink: #F4F0FF;      /* Lilac/awan sangat muda */
+            --dusty-rose: #9B8EC7;        /* Pastel Periwinkle / Lilac utama */
+            --dusty-rose-dark: #7E6FA8;   /* Ungu pastel lebih gelap untuk gradasi */
+            --dusty-rose-light: #D5C9F0;  /* Ungu muda untuk garis/border */
+            --sage-green: #8BB8D6;        /* Biru langit pastel */
+            --text-dark: #3F3B52;         /* Navy/ungu tua lembut untuk teks */
+            --text-muted: #7B7591;        /* Abu keunguan untuk sub-teks */
+            --gold-accent: #E2B86B;       /* Emas bulan & bintang */
             --font-script: 'Alex Brush', cursive;
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Poppins', sans-serif;
@@ -81,18 +81,24 @@
 
         .petal {
             position: absolute;
-            background: rgba(232, 180, 178, 0.55);
-            border-radius: 150% 0 150% 0;
+            background: linear-gradient(135deg, #FFE699, #E2B86B);
+            /* Membentuk bintang 4 sudut berkilau */
+            clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+            box-shadow: 0 0 8px rgba(255, 223, 128, 0.9);
             animation: fall linear infinite;
         }
 
         @keyframes fall {
             0% {
-                transform: translate(0, -20px) rotate(0deg);
-                opacity: 0.9;
+                transform: translate(0, -20px) rotate(0deg) scale(0.8);
+                opacity: 0.95;
+            }
+            50% {
+                transform: translate(22px, 50vh) rotate(180deg) scale(1.15);
+                opacity: 0.6;
             }
             100% {
-                transform: translate(45px, 100vh) rotate(360deg);
+                transform: translate(45px, 100vh) rotate(360deg) scale(0.8);
                 opacity: 0.2;
             }
         }
@@ -104,7 +110,7 @@
             width: 100%;
             max-width: 450px;
             height: 100vh;
-            background: radial-gradient(circle at center, #FFFFFF 0%, #FDF2F2 100%);
+            background: radial-gradient(circle at center, #FFFFFF 0%, #F2EEFF 60%, #E8F1FF 100%);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -1014,164 +1020,421 @@
             color: #fff;
             font-family: var(--font-sans);
         }
+
+        /* =========================================================
+           1. UPGRADE BACKGROUND: WATERCOLOR MESH & DREAMY BOKEH
+        ========================================================= */
+       body {
+            background: linear-gradient(135deg, #dcd6f0 0%, #eef2fb 50%, #e4dcf5 100%);
+        }
+
+        .app-container {
+            background-color: #FAF8FF;
+            background-image: 
+                radial-gradient(at 10% 15%, rgba(213, 201, 240, 0.5) 0px, transparent 50%),
+                radial-gradient(at 90% 30%, rgba(196, 224, 249, 0.45) 0px, transparent 55%),
+                radial-gradient(at 15% 65%, rgba(255, 230, 167, 0.28) 0px, transparent 50%),
+                radial-gradient(at 85% 85%, rgba(248, 208, 224, 0.45) 0px, transparent 55%),
+                radial-gradient(#E2B86B 0.55px, transparent 0.55px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 26px 26px;
+            z-index: 1;
+        }
+
+        .bg-bokeh-orbs {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bokeh-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(35px);
+            opacity: 0.45;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+
+        .bokeh-orb.orb-1 {
+            width: 220px; height: 220px;
+            background: #D5C9F0; /* Pastel Lilac */
+            top: 8%; left: -60px;
+        }
+        .bokeh-orb.orb-2 {
+            width: 260px; height: 260px;
+            background: #FFF0C2; /* Cahaya Bintang Lembut */
+            top: 38%; right: -80px;
+            animation-delay: 3s;
+        }
+        .bokeh-orb.orb-3 {
+            width: 200px; height: 200px;
+            background: #C4E0F9; /* Baby Blue Cloud */
+            top: 68%; left: -50px;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(40px) scale(1.12); }
+        }
+
+        section {
+            z-index: 2;
+        }
+
+        /* =========================================================
+           2. UPGRADE GALERI 9 FOTO (ANTI MENUMPUK)
+        ========================================================= */
+        .gallery-controls {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--dusty-rose-light);
+            border-radius: 25px;
+            padding: 3px;
+            margin: 6px 0 14px;
+            box-shadow: 0 3px 10px rgba(209, 129, 126, 0.12);
+        }
+
+        .gallery-tab-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gallery-tab-btn.active {
+            background: var(--dusty-rose);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(209, 129, 126, 0.35);
+        }
+
+        /* Foto 1: Highlight Utama */
+        .gallery-featured {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 22px rgba(182, 102, 99, 0.18);
+            margin-bottom: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-featured img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-featured:hover img {
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(4px);
+            color: var(--dusty-rose-dark);
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+
+        /* Mode 1: Horizontal Swipe Carousel (Default agar tidak menumpuk) */
+        .gallery-track.mode-slider {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 4px 4px 14px;
+            scrollbar-width: none;
+        }
+        .gallery-track.mode-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-track.mode-slider .gallery-card {
+            flex: 0 0 145px;
+            aspect-ratio: 4 / 5;
+            scroll-snap-align: center;
+        }
+
+        /* Mode 2: Compact 3-Column Grid */
+        .gallery-track.mode-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .gallery-track.mode-grid .gallery-card {
+            aspect-ratio: 1 / 1;
+        }
+
+        .gallery-card {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            position: relative;
+            background: #f9ecec;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .swipe-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            opacity: 0.85;
+        }
+
+        /* Tombol Geser di Lightbox */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 210;
+        }
+        .lightbox-nav.prev { left: 14px; }
+        .lightbox-nav.next { right: 14px; }
+        .lightbox-counter {
+            position: absolute;
+            bottom: 24px;
+            color: #fff;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 14px;
+            border-radius: 15px;
+        }
     </style>
 </head>
 <body class="locked">
 
     <!-- Reusable SVG Definitions (FIXED VIEWBOX AGAR TIDAK TERPOTONG) -->
+    <!-- Reusable SVG Definitions: TEMA DREAMY CELESTIAL PASTEL -->
     <svg style="display:none;">
         <defs>
-            <!-- Top Hanging Watercolor Floral Header -->
+            <!-- 1. Header Awan Lembut & Bintang Gantung Emas (Menggantikan #hanging-floral) -->
+            <!-- 1. Header Awan Lembut & Bintang Gantung Emas (RAPI & PRESISI) -->
             <g id="hanging-floral">
-                <!-- Soft Eucalyptus & Pink Blossoms -->
-                <path d="M0,0 L450,0 L450,45 Q380,100 310,55 Q225,115 140,60 Q70,105 0,50 Z" fill="#FDF2F2" opacity="0.75"/>
-                <!-- Stems -->
-                <path d="M40,0 Q55,55 32,95 M115,0 Q125,65 142,115 M225,0 Q220,60 238,105 M325,0 Q310,70 338,115 M405,0 Q390,55 415,95" stroke="#8FA382" stroke-width="1.6" fill="none" opacity="0.65"/>
-                <!-- Leaves -->
-                <ellipse cx="45" cy="45" rx="14" ry="7" transform="rotate(-30 45 45)" fill="#9CAF88" opacity="0.75"/>
-                <ellipse cx="65" cy="60" rx="14" ry="7" transform="rotate(25 65 60)" fill="#8FA382" opacity="0.75"/>
-                <ellipse cx="158" cy="50" rx="16" ry="8" transform="rotate(35 158 50)" fill="#A9BA9D" opacity="0.8"/>
-                <ellipse cx="288" cy="52" rx="15" ry="7" transform="rotate(-35 288 52)" fill="#9CAF88" opacity="0.75"/>
-                <ellipse cx="385" cy="48" rx="14" ry="7" transform="rotate(25 385 48)" fill="#8FA382" opacity="0.75"/>
-                <!-- Watercolor Flowers -->
-                <g transform="translate(88, 44)">
-                    <circle cx="0" cy="-10" r="12" fill="#F4C2C2" opacity="0.85"/>
-                    <circle cx="10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="6" cy="9" r="12" fill="#F4C2C2" opacity="0.85"/>
-                    <circle cx="-6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="-10" cy="-3" r="12" fill="#F7D6D6" opacity="0.85"/>
-                    <circle cx="0" cy="0" r="5" fill="#D4A373"/>
+                <!-- Lapisan Awan Belakang (Ungu Lilac Lembut) -->
+                <path d="M0,0 L450,0 L450,68 Q410,98 365,70 Q315,110 255,74 Q195,114 135,72 Q75,108 35,70 Q15,88 0,68 Z" fill="#E8E2F8" opacity="0.75"/>
+
+                <!-- Tali Gantungan Emas (Ditaruh DI BALIK Awan Putih & berhenti persis di cincin atas) -->
+                <g stroke="#E2B86B" stroke-width="1.2" fill="none">
+                    <line x1="55" y1="25" x2="55" y2="91"/>
+                    <line x1="140" y1="30" x2="140" y2="107"/>
+                    <line x1="225" y1="25" x2="225" y2="93"/>
+                    <line x1="315" y1="30" x2="315" y2="109"/>
+                    <line x1="395" y1="25" x2="395" y2="87"/>
                 </g>
-                <g transform="translate(225, 42) scale(1.15)">
-                    <circle cx="0" cy="-10" r="12" fill="#F7D6D6" opacity="0.9"/>
-                    <circle cx="10" cy="-3" r="12" fill="#F4C2C2" opacity="0.9"/>
-                    <circle cx="6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="-6" cy="9" r="12" fill="#F4C2C2" opacity="0.9"/>
-                    <circle cx="-10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="0" cy="0" r="5" fill="#C59B6D"/>
+
+                <!-- Cincin Pengait Emas Kecil (Agar sambungan tali ke bulan/bintang rapi) -->
+                <g stroke="#D4A359" stroke-width="1.2" fill="#FAF8FF">
+                    <circle cx="55" cy="92.5" r="1.8"/>
+                    <circle cx="140" cy="108.5" r="1.8"/>
+                    <circle cx="225" cy="94.5" r="2"/>
+                    <circle cx="315" cy="110.5" r="1.8"/>
+                    <circle cx="395" cy="88.5" r="1.8"/>
                 </g>
-                <g transform="translate(358, 46)">
-                    <circle cx="0" cy="-10" r="12" fill="#F4C2C2" opacity="0.85"/>
-                    <circle cx="10" cy="-3" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="6" cy="9" r="12" fill="#F7D6D6" opacity="0.85"/>
-                    <circle cx="-6" cy="9" r="12" fill="#E8A5A2" opacity="0.85"/>
-                    <circle cx="-10" cy="-3" r="12" fill="#F4C2C2" opacity="0.85"/>
-                    <circle cx="0" cy="0" r="5" fill="#D4A373"/>
-                </g>
-                <!-- Hanging Buds -->
-                <circle cx="32" cy="95" r="7" fill="#E8A5A2"/>
-                <circle cx="142" cy="115" r="8" fill="#F4C2C2"/>
-                <circle cx="238" cy="105" r="7" fill="#E8A5A2"/>
-                <circle cx="338" cy="115" r="8" fill="#F4C2C2"/>
-                <circle cx="415" cy="95" r="7" fill="#E8A5A2"/>
+
+                <!-- Bintang & Bulan Sabit Gantung (Titik puncaknya pas menyentuh cincin) -->
+                <!-- 1. Bintang Kiri (x=55) -->
+                <polygon points="55,94 58,101 65,101 59,105 61,112 55,108 49,112 51,105 45,101 52,101" fill="#F3C969"/>
+                
+                <!-- 2. Bulan Sabit Kiri-Tengah (Ujung atas pas di x=140, y=110) -->
+                <path d="M140,110 A11,11 0 1,0 146,129 A8.5,8.5 0 1,1 140,110 Z" fill="#E2B86B"/>
+                
+                <!-- 3. Bintang Utama Tengah (x=225) -->
+                <polygon points="225,96 229,105 239,105 231,111 234,120 225,114 216,120 219,111 211,105 221,105" fill="#F3C969"/>
+                
+                <!-- 4. Bulan Sabit Kanan-Tengah (Ujung atas pas di x=315, y=112) -->
+                <path d="M315,112 A11,11 0 1,0 321,131 A8.5,8.5 0 1,1 315,112 Z" fill="#E2B86B"/>
+                
+                <!-- 5. Bintang Kanan (x=395) -->
+                <polygon points="395,90 398,97 405,97 399,101 401,108 395,104 389,108 391,101 385,97 392,97" fill="#F3C969"/>
+
+                <!-- Lapisan Awan Depan Putih Gebu (Menutupi pangkal atas tali dengan rapi) -->
+                <path d="M0,0 L450,0 L450,48 Q405,82 355,52 Q295,92 225,55 Q155,92 95,52 Q45,82 0,48 Z" fill="#FFFFFF"/>
+
+                <!-- Titik-titik Kilau (Sparkles) -->
+                <circle cx="98" cy="82" r="2.2" fill="#F3C969" opacity="0.85"/>
+                <circle cx="185" cy="88" r="2" fill="#D5C9F0"/>
+                <circle cx="272" cy="86" r="2.2" fill="#F3C969" opacity="0.85"/>
+                <circle cx="355" cy="80" r="2" fill="#D5C9F0"/>
             </g>
 
-            <!-- Botanical Wreath Frame -->
+            <!-- 2. Bingkai Lingkaran Bulan Sabit Emas & Bintang (Menggantikan #leaf-wreath) -->
             <g id="leaf-wreath">
-                <circle cx="125" cy="125" r="96" fill="none" stroke="#8FA382" stroke-width="2" stroke-dasharray="6 4" opacity="0.7"/>
-                <circle cx="125" cy="125" r="101" fill="none" stroke="#C59B6D" stroke-width="1" opacity="0.45"/>
-                <!-- Wreath Leaves Around Circle -->
-                <g fill="#8FA382" opacity="0.85">
-                    <ellipse cx="125" cy="26" rx="10" ry="4.5" transform="rotate(-10 125 26)"/>
-                    <ellipse cx="165" cy="34" rx="10" ry="4.5" transform="rotate(20 165 34)"/>
-                    <ellipse cx="200" cy="58" rx="10" ry="4.5" transform="rotate(45 200 58)"/>
-                    <ellipse cx="218" cy="95" rx="10" ry="4.5" transform="rotate(75 218 95)"/>
-                    <ellipse cx="220" cy="145" rx="10" ry="4.5" transform="rotate(105 220 145)"/>
-                    <ellipse cx="200" cy="190" rx="10" ry="4.5" transform="rotate(135 200 190)"/>
-                    <ellipse cx="165" cy="214" rx="10" ry="4.5" transform="rotate(165 165 214)"/>
-                    <ellipse cx="125" cy="223" rx="10" ry="4.5" transform="rotate(185 125 223)"/>
-                    <ellipse cx="80" cy="214" rx="10" ry="4.5" transform="rotate(210 80 214)"/>
-                    <ellipse cx="47" cy="190" rx="10" ry="4.5" transform="rotate(235 47 190)"/>
-                    <ellipse cx="30" cy="145" rx="10" ry="4.5" transform="rotate(265 30 145)"/>
-                    <ellipse cx="32" cy="95" rx="10" ry="4.5" transform="rotate(295 32 95)"/>
-                    <ellipse cx="52" cy="58" rx="10" ry="4.5" transform="rotate(320 52 58)"/>
-                    <ellipse cx="85" cy="34" rx="10" ry="4.5" transform="rotate(345 85 34)"/>
+                <!-- Lingkaran Orbit Emas Tipis -->
+                <circle cx="125" cy="125" r="96" fill="none" stroke="#E2B86B" stroke-width="1.6" stroke-dasharray="5 5" opacity="0.75"/>
+                <circle cx="125" cy="125" r="102" fill="none" stroke="#9B8EC7" stroke-width="1" opacity="0.4"/>
+                
+                <!-- Sabuk Bulan Sabit Emas di Sisi Kiri-Bawah Lingkaran -->
+                <path d="M45,75 A98,98 0 0,0 185,202 A92,92 0 0,1 55,65 Z" fill="#F3C969" opacity="0.65"/>
+
+                <!-- Bintang-Bintang Mengelilingi Bingkai Foto -->
+                <g fill="#E2B86B">
+                    <polygon points="125,20 127,25 132,25 128,28 129,33 125,30 121,33 122,28 118,25 123,25"/>
+                    <polygon points="205,60 207,64 211,64 208,67 209,71 205,68 201,71 202,67 199,64 203,64"/>
+                    <polygon points="222,135 224,139 228,139 225,142 226,146 222,143 218,146 219,142 216,139 220,139"/>
+                    <polygon points="180,206 182,210 186,210 183,213 184,217 180,214 176,217 177,213 174,210 178,210"/>
+                    <polygon points="65,198 67,202 71,202 68,205 69,209 65,206 61,209 62,205 59,202 63,202"/>
+                    <polygon points="28,118 30,122 34,122 31,125 32,129 28,126 24,129 25,125 22,122 26,122"/>
                 </g>
-                <!-- Small Pink Berries on Wreath -->
-                <g fill="#E8A5A2">
-                    <circle cx="145" cy="27" r="4"/>
-                    <circle cx="210" cy="75" r="4"/>
-                    <circle cx="213" cy="168" r="4"/>
-                    <circle cx="145" cy="222" r="4"/>
-                    <circle cx="62" cy="203" r="4"/>
-                    <circle cx="28" cy="120" r="4"/>
-                    <circle cx="65" cy="44" r="4"/>
+
+                <!-- Awan Kecil di Bawah Bingkai -->
+                <g fill="#FFFFFF" opacity="0.92">
+                    <circle cx="95" cy="218" r="10"/>
+                    <circle cx="110" cy="215" r="13"/>
+                    <circle cx="127" cy="216" r="12"/>
+                    <circle cx="142" cy="219" r="9"/>
                 </g>
             </g>
 
-            <!-- Cute Fairy Left (Brunette) -->
+            <!-- 3. Kelinci Putih Tidur di Atas Awan Pink (Menggantikan #fairy-brunette) -->
             <g id="fairy-brunette">
-                <ellipse cx="28" cy="45" rx="20" ry="11" transform="rotate(-25 28 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
-                <ellipse cx="62" cy="45" rx="20" ry="11" transform="rotate(25 62 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
-                <circle cx="45" cy="30" r="16" fill="#5C4033"/>
-                <circle cx="45" cy="32" r="12" fill="#FFE5D9"/>
-                <circle cx="40" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
-                <circle cx="50" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
-                <circle cx="41" cy="31" r="1.3" fill="#3B2820"/>
-                <circle cx="49" cy="31" r="1.3" fill="#3B2820"/>
-                <path d="M43,35 Q45,37 47,35" stroke="#3B2820" stroke-width="1" fill="none"/>
-                <circle cx="36" cy="21" r="4" fill="#F4C2C2"/>
-                <circle cx="45" cy="19" r="4.5" fill="#FFE5EC"/>
-                <circle cx="54" cy="21" r="4" fill="#F4C2C2"/>
-                <path d="M37,44 L53,44 L58,64 Q45,69 32,64 Z" fill="#E8A5A2"/>
-                <path d="M35,52 Q45,58 55,52" stroke="#9CAF88" stroke-width="3" fill="none"/>
+                <!-- Awan Lembut -->
+                <path d="M18,58 Q10,58 10,50 Q10,42 20,41 Q25,30 38,32 Q48,25 58,34 Q70,33 74,43 Q82,45 80,53 Q78,58 68,58 Z" fill="#F8E8F4" stroke="#E5CFE0" stroke-width="1"/>
+                <!-- Badan & Kepala Kelinci Tidur -->
+                <ellipse cx="48" cy="43" rx="14" ry="10" fill="#FFFFFF"/>
+                <circle cx="34" cy="41" r="9.5" fill="#FFFFFF"/>
+                <!-- Telinga Kelinci Rebah -->
+                <ellipse cx="41" cy="33" rx="9" ry="3.8" transform="rotate(-12 41 33)" fill="#FFFFFF" stroke="#F4C2C2" stroke-width="0.8"/>
+                <ellipse cx="42" cy="33" rx="6" ry="2" transform="rotate(-12 42 33)" fill="#FAD4D8"/>
+                <ellipse cx="38" cy="29" rx="8.5" ry="3.5" transform="rotate(-28 38 29)" fill="#FFFFFF"/>
+                <!-- Mata Terpejam & Pipi Merona -->
+                <path d="M29,41 Q31.5,43.5 34,41" stroke="#6D5D7B" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <circle cx="28" cy="43.5" r="2.2" fill="#F4A2B8" opacity="0.65"/>
+                <!-- Ekor Bulat Kecil -->
+                <circle cx="62" cy="42" r="4" fill="#FFFFFF"/>
+                <!-- Bintang Kecil di Atas Kelinci -->
+                <polygon points="24,20 25.5,23 29,23.5 26.5,26 27,29.5 24,27.8 21,29.5 21.5,26 19,23.5 22.5,23" fill="#F3C969"/>
             </g>
 
-            <!-- Cute Fairy Right (Blonde) -->
+            <!-- 4. Kelinci Krem Tidur Memeluk Bintang di Awan Biru (Menggantikan #fairy-blonde) -->
             <g id="fairy-blonde">
-                <ellipse cx="28" cy="45" rx="20" ry="11" transform="rotate(-25 28 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
-                <ellipse cx="62" cy="45" rx="20" ry="11" transform="rotate(25 62 45)" fill="#FFF5F5" stroke="#E8B4B2" stroke-width="1.2" opacity="0.9"/>
-                <circle cx="45" cy="15" r="7" fill="#D4A373"/>
-                <circle cx="45" cy="30" r="15" fill="#D4A373"/>
-                <circle cx="45" cy="32" r="12" fill="#FFE5D9"/>
-                <circle cx="40" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
-                <circle cx="50" cy="34" r="2.2" fill="#F4A2A2" opacity="0.7"/>
-                <circle cx="41" cy="31" r="1.3" fill="#3B2820"/>
-                <circle cx="49" cy="31" r="1.3" fill="#3B2820"/>
-                <path d="M43,35 Q45,37 47,35" stroke="#3B2820" stroke-width="1" fill="none"/>
-                <circle cx="37" cy="21" r="3.8" fill="#F4C2C2"/>
-                <circle cx="45" cy="19" r="4" fill="#E8A5A2"/>
-                <circle cx="53" cy="21" r="3.8" fill="#F4C2C2"/>
-                <path d="M37,44 L53,44 L60,65 Q45,70 30,65 Z" fill="#F4C2C2"/>
+                <!-- Awan Biru Pastel -->
+                <path d="M18,58 Q10,58 10,50 Q10,42 20,41 Q25,30 38,32 Q48,25 58,34 Q70,33 74,43 Q82,45 80,53 Q78,58 68,58 Z" fill="#E6F2FF" stroke="#C9E0F7" stroke-width="1"/>
+                <!-- Badan & Kepala Kelinci (Menghadap Kanan) -->
+                <ellipse cx="42" cy="43" rx="14" ry="10" fill="#FFFDF9"/>
+                <circle cx="56" cy="41" r="9.5" fill="#FFFDF9"/>
+                <!-- Telinga Kelinci -->
+                <ellipse cx="49" cy="33" rx="9" ry="3.8" transform="rotate(12 49 33)" fill="#FFFDF9"/>
+                <ellipse cx="48" cy="33" rx="6" ry="2" transform="rotate(12 48 33)" fill="#FAD4D8"/>
+                <!-- Mata Terpejam & Pipi -->
+                <path d="M56,41 Q58.5,43.5 61,41" stroke="#6D5D7B" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <circle cx="61" cy="43.5" r="2.2" fill="#F4A2B8" opacity="0.65"/>
+                <!-- Ekor Bulat -->
+                <circle cx="28" cy="42" r="4" fill="#FFFDF9"/>
+                <!-- Bulan Sabit Kecil di Atas -->
+                <path d="M66,18 A7,7 0 1,0 66,30 A5,5 0 1,1 66,18 Z" fill="#F3C969"/>
             </g>
 
-            <!-- Pink Watercolor Butterfly -->
+            <!-- 5. Bintang Kembar & Bulan Sabit Berkilau (Menggantikan #pink-butterfly) -->
             <g id="pink-butterfly">
-                <ellipse cx="16" cy="18" rx="12" ry="9" transform="rotate(-30 16 18)" fill="#F4C2C2" opacity="0.9"/>
-                <ellipse cx="32" cy="18" rx="12" ry="9" transform="rotate(30 32 18)" fill="#F4C2C2" opacity="0.9"/>
-                <ellipse cx="18" cy="28" rx="8" ry="6" transform="rotate(20 18 28)" fill="#E8A5A2" opacity="0.85"/>
-                <ellipse cx="30" cy="28" rx="8" ry="6" transform="rotate(-20 30 28)" fill="#E8A5A2" opacity="0.85"/>
-                <line x1="24" y1="12" x2="24" y2="33" stroke="#7A5C58" stroke-width="1.8" stroke-linecap="round"/>
+                <!-- Bintang Utama Emas -->
+                <path d="M24,6 C26,16 30,20 40,22 C30,24 26,28 24,38 C22,28 18,24 8,22 C18,20 22,16 24,6 Z" fill="#F3C969"/>
+                <!-- Bintang Kecil Lilac -->
+                <path d="M37,8 C38,12 39,13 43,14 C39,15 38,16 37,20 C36,16 35,15 31,14 C35,13 36,12 37,8 Z" fill="#B8A9DF"/>
+                <!-- Titik Kilau -->
+                <circle cx="12" cy="12" r="2" fill="#E2B86B"/>
+                <circle cx="35" cy="33" r="1.8" fill="#F4A2B8"/>
             </g>
 
-            <!-- Pink Ribbon Mushroom Illustration -->
+            <!-- 6. Ilustrasi Utama: Kelinci Tidur Nyenyak di Bulan Sabit Emas & Awan (Menggantikan #fairy-mushroom) -->
+            <!-- 6. Ilustrasi Utama: Kelinci Tidur Nyenyak di Bulan Sabit Emas & Awan (RAPI & NYAMBUNG) -->
             <g id="fairy-mushroom">
-                <ellipse cx="120" cy="140" rx="85" ry="12" fill="#9CAF88" opacity="0.45"/>
-                <path d="M58,140 Q60,115 64,115 Q68,115 70,140 Z" fill="#F5EBE6"/>
-                <path d="M42,118 Q64,88 86,118 Z" fill="#E8A5A2"/>
-                <circle cx="56" cy="108" r="3.5" fill="#FFF" opacity="0.8"/>
-                <circle cx="70" cy="111" r="2.5" fill="#FFF" opacity="0.8"/>
-                <path d="M170,140 Q172,110 176,110 Q180,110 182,140 Z" fill="#F5EBE6"/>
-                <path d="M154,113 Q176,82 198,113 Z" fill="#F4C2C2"/>
-                <circle cx="170" cy="102" r="3" fill="#FFF" opacity="0.8"/>
-                <circle cx="184" cy="106" r="3.5" fill="#FFF" opacity="0.8"/>
-                <path d="M104,140 Q108,78 120,78 Q132,78 136,140 Z" fill="#F3E5AB" opacity="0.6"/>
-                <path d="M106,140 Q110,80 120,80 Q130,80 134,140 Z" fill="#FFF8F0"/>
-                <path d="M60,86 Q120,15 180,86 Q150,94 120,90 Q90,94 60,86 Z" fill="#E29592"/>
-                <circle cx="95" cy="65" r="7" fill="#FFF" opacity="0.85"/>
-                <circle cx="122" cy="50" r="8" fill="#FFF" opacity="0.85"/>
-                <circle cx="150" cy="68" r="6.5" fill="#FFF" opacity="0.85"/>
-                <circle cx="80" cy="78" r="5" fill="#FFF" opacity="0.85"/>
-                <circle cx="135" cy="75" r="5.5" fill="#FFF" opacity="0.85"/>
-                <ellipse cx="106" cy="45" rx="15" ry="9" transform="rotate(-15 106 45)" fill="#F9DCE0" stroke="#D1817E" stroke-width="1"/>
-                <ellipse cx="134" cy="45" rx="15" ry="9" transform="rotate(15 134 45)" fill="#F9DCE0" stroke="#D1817E" stroke-width="1"/>
-                <path d="M116,48 L108,68 M124,48 L132,68" stroke="#F9DCE0" stroke-width="5" stroke-linecap="round"/>
-                <circle cx="120" cy="46" r="5.5" fill="#E8A5A2"/>
+                <!-- Bayangan Awan Dasar -->
+                <ellipse cx="120" cy="142" rx="85" ry="12" fill="#D5C9F0" opacity="0.45"/>
+                
+                <!-- Tali & Bintang Gantung (Berangkat persis dari ujung lancip bulan di x=106, y=24) -->
+                <line x1="106" y1="24" x2="106" y2="48" stroke="#E2B86B" stroke-width="1.3"/>
+                <circle cx="106" cy="49.5" r="1.6" stroke="#D4A359" stroke-width="1.1" fill="#FAF8FF"/>
+                <polygon points="106,51 108.2,56 113.5,56 109.2,59.2 110.8,64.5 106,61.2 101.2,64.5 102.8,59.2 98.5,56 103.8,56" fill="#F3C969"/>
+
+                <!-- Bulan Sabit Emas Besar (Ujung atas lancip & mulus di x=106, y=24) -->
+                <path d="M106,24 A56,56 0 1,0 176,108 A45,45 0 1,1 106,24 Z" fill="#F3C969"/>
+                <!-- Cincin Kecil di Ujung Bulan -->
+                <circle cx="106" cy="24" r="2" fill="#E2B86B"/>
+
+                <!-- Kelinci Imut Tidur di Lekukan Bulan -->
+                <g transform="translate(82, 74)">
+                    <!-- Badan Kelinci -->
+                    <ellipse cx="38" cy="25" rx="20" ry="13" fill="#FFFFFF"/>
+                    <!-- Kepala Kelinci -->
+                    <circle cx="18" cy="22" r="13" fill="#FFFFFF"/>
+                    <!-- Telinga Panjang Rebah -->
+                    <ellipse cx="29" cy="12" rx="13" ry="5" transform="rotate(-10 29 12)" fill="#FFFFFF"/>
+                    <ellipse cx="30" cy="12" rx="9" ry="2.8" transform="rotate(-10 30 12)" fill="#FAD4D8"/>
+                    <ellipse cx="25" cy="7" rx="11" ry="4.2" transform="rotate(-25 25 7)" fill="#FFFFFF"/>
+                    <!-- Topi Tidur Pastel -->
+                    <path d="M12,11 Q22,-4 38,6 Q26,10 12,11 Z" fill="#9B8EC7"/>
+                    <circle cx="39" cy="6" r="3.5" fill="#FFF"/>
+                    <!-- Mata Terpejam Bahagia & Pipi Pink -->
+                    <path d="M11,22 Q14.5,25.5 18,22" stroke="#5A4E6B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <circle cx="10" cy="25" r="3" fill="#F4A2B8" opacity="0.7"/>
+                    <!-- Tangan Kecil -->
+                    <ellipse cx="23" cy="31" rx="5" ry="3" fill="#FFFFFF"/>
+                    <!-- Ekor Pompom -->
+                    <circle cx="58" cy="23" r="5.5" fill="#FFFFFF"/>
+                </g>
+
+                <!-- Awan Putih Gebu di Bawah Bulan Sabit -->
+                <path d="M42,138 Q28,138 28,125 Q28,113 43,111 Q50,96 68,99 Q82,86 102,98 Q118,88 136,100 Q154,94 166,109 Q184,110 184,124 Q184,138 168,138 Z" fill="#FFFFFF" opacity="0.96"/>
+                <path d="M65,142 Q55,142 55,133 Q55,125 66,124 Q74,113 89,116 Q102,107 116,117 Q130,112 140,122 Q152,123 152,133 Q152,142 140,142 Z" fill="#F4F0FF" opacity="0.9"/>
+
+                <!-- Taburan Bintang Kecil di Sekitar Bulan -->
+                <polygon points="48,55 50,60 55,60 51,63 52,68 48,65 44,68 45,63 41,60 46,60" fill="#F3C969"/>
+                <polygon points="182,62 184,66 188,66 185,69 186,73 182,70 178,73 179,69 176,66 180,66" fill="#F3C969"/>
+                <circle cx="152" cy="42" r="2.5" fill="#FFE28A"/>
+                <circle cx="58" cy="85" r="2" fill="#D5C9F0"/>
+                <circle cx="192" cy="92" r="2.5" fill="#F4A2B8" opacity="0.7"/>
             </g>
         </defs>
     </svg>
 
-    <!-- Soft Falling Petals Container -->
     <div class="petals-container" id="petals"></div>
 
     <!-- =================================================================
@@ -1196,7 +1459,7 @@
 
                 <div class="baby-photo-circle">
                     <!-- [GANTI FOTO BAYI SAMPUL DI SINI] -->
-                    <img src="foto\foto 1.jpeg">
+                    <img src="cover.JPEG">
                 </div>
 
                 <svg class="fairy-badge fairy-right" viewBox="0 0 90 80">
@@ -1225,6 +1488,12 @@
          MAIN INVITATION CONTAINER
     ================================================================== -->
     <div class="app-container">
+        <!-- Efek Cahaya Bokeh Mengambang di Background -->
+        <div class="bg-bokeh-orbs">
+            <div class="bokeh-orb orb-1"></div>
+            <div class="bokeh-orb orb-2"></div>
+            <div class="bokeh-orb orb-3"></div>
+        </div>
 
         <!-- Top Hanging Watercolor Floral (FIXED VIEWBOX) -->
         <svg class="floral-header-svg" viewBox="0 0 450 135">
@@ -1250,14 +1519,14 @@
                 </svg>
                 <div class="baby-photo-circle">
                     <!-- [GANTI FOTO BAYI TENGAH DI SINI] -->
-                    <img src="foto\foto 1.jpeg" alt="Aisyah Rumaisha Aghnia">
+                    <img src="cover.JPEG" alt="Aisyah Rumaisha Aghnia">
                 </div>
             </div>
 
             <h2 class="baby-full-name">Aisyah Rumaisha Aghnia</h2>
             <div class="parents-info">
                 Anak ke-2 dari<br>
-                <strong>Bapak Iwan &amp; Ibu Auva</strong>
+                <strong>Iwan &amp; Auva</strong>
             </div>
 
             <!-- 4 Birth Details Icons (Sesuai Data Kelahiran Aisyah) -->
@@ -1381,24 +1650,63 @@
             </p>
 
             <div class="stroller-divider">
-                <i class="fa-solid fa-baby-carriage"></i>
+                <i class="fa-solid fa-moon"></i>
             </div>
 
             <h2 class="script-title">Galeri Photo</h2>
 
-            <div class="gallery-grid">
-                <!-- [GANTI FOTO GALERI 1 DI SINI] -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="foto/foto 2.jpeg" alt="Galeri Baby 1">
+            <!-- Tombol Ganti Mode Tampilan (Geser vs Kisi) -->
+            <div class="gallery-controls">
+                <button type="button" class="gallery-tab-btn active" id="tab-slider" onclick="switchGalleryView('slider')">
+                    <i class="fa-solid fa-arrows-left-right"></i> Mode Geser
+                </button>
+                <button type="button" class="gallery-tab-btn" id="tab-grid" onclick="switchGalleryView('grid')">
+                    <i class="fa-solid fa-border-all"></i> Lihat Semua (9)
+                </button>
+            </div>
+
+            <!-- [GANTI FOTO 1 - UTAMA / BESAR DI SINI] -->
+            <div class="gallery-featured" onclick="openLightboxIndex(0)">
+                <img class="gallery-photo-item" src="foto 1.JPG">
+                <span class="featured-badge"><i class="fa-solid fa-expand"></i> Klik untuk perbesar</span>
+            </div>
+
+            <!-- [GANTI FOTO 2 SAMPAI 9 DI BAWAH INI] -->
+            <div class="gallery-track mode-slider" id="gallery-track">
+                <!-- FOTO 2 -->
+                <div class="gallery-card" onclick="openLightboxIndex(1)">
+                    <img class="gallery-photo-item" src="cover.JPEG">
                 </div>
-                <!-- [GANTI FOTO GALERI 2 DI SINI] -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="foto\foto 3.JPG" alt="Galeri Baby 2">
+                <!-- FOTO 3 -->
+                <div class="gallery-card" onclick="openLightboxIndex(2)">
+                    <img class="gallery-photo-item" src="foto 2.JPG">
                 </div>
-                <!-- [GANTI FOTO GALERI 3 DI SINI] -->
-                <div class="gallery-item wide" onclick="openLightbox(this)">
-                    <img src="foto\foto 5.JPG" alt="Galeri Baby 3">
+                <!-- FOTO 4 -->
+                <div class="gallery-card" onclick="openLightboxIndex(3)">
+                    <img class="gallery-photo-item" src="foto 3.JPG">
+                <!-- FOTO 5 -->
+                <div class="gallery-card" onclick="openLightboxIndex(4)">
+                    <img class="gallery-photo-item" src="foto 4.JPG">
+                <!-- FOTO 6 -->
+                <div class="gallery-card" onclick="openLightboxIndex(5)">
+                    <img class="gallery-photo-item" src="foto 5.JPG">
                 </div>
+                <!-- FOTO 7 -->
+                <div class="gallery-card" onclick="openLightboxIndex(6)">
+                    <img class="gallery-photo-item" src="foto 6.JPG">
+                </div>
+                <!-- FOTO 8 -->
+                <div class="gallery-card" onclick="openLightboxIndex(7)">
+                    <img class="gallery-photo-item" src="foto 7.JPG">
+                </div>
+                <!-- FOTO 9 -->
+                <div class="gallery-card" onclick="openLightboxIndex(8)">
+                    <img class="gallery-photo-item" src="foto terakhir.JPG">
+                </div>
+            </div>
+
+            <div class="swipe-hint" id="swipe-hint">
+                <i class="fa-solid fa-hand-pointer"></i> Geser foto ke samping untuk melihat lainnya
             </div>
 
             <!-- Quranic Verse Banner (QS. Al-Furqan Ayat 74) -->
@@ -1481,7 +1789,7 @@
                     </svg>
                     <div class="baby-photo-circle">
                         <!-- [GANTI FOTO BAYI PENUTUP DI SINI] -->
-                        <img src="foto\foto 4.jpeg" alt="Baby Aisyah">
+                        <img src="foto terakhir.JPG" alt="Baby Aisyah">
                     </div>
                     <svg class="fairy-badge fairy-right" viewBox="0 0 90 80">
                         <use href="#fairy-blonde"></use>
@@ -1538,9 +1846,12 @@
 
     </div>
 
-    <!-- Lightbox Modal for Gallery -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <!-- Lightbox Modal dengan Navigasi 9 Foto -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-nav prev" onclick="changeLightboxSlide(-1, event)"><i class="fa-solid fa-chevron-left"></i></button>
         <img id="lightbox-img" src="" alt="Preview">
+        <button class="lightbox-nav next" onclick="changeLightboxSlide(1, event)"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="lightbox-counter" id="lightbox-counter">1 / 9</div>
     </div>
 
 
@@ -1884,7 +2195,7 @@
 
         // Fitur Kirim Langsung ke WhatsApp Lengkap dengan Kata Pengantar
         function shareWA(guestName, inviteUrl) {
-            const text = `Assalamu'alaikum Wr. Wb.\nKepada Yth. *${guestName}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara *Tasyakuran Aqiqah* putri kedua kami:\n\n🌸 *Aisyah Rumaisha Aghnia* 🌸\n\nInfo lengkap acara & lokasi dapat dilihat pada link undangan berikut:\n${inviteUrl}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nKami yang mengundang,\n*Auva & Iwan*`;
+            const text = `Assalamu'alaikum Wr. Wb.\nKepada Yth. *${guestName}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara *Tasyakuran Aqiqah* putri kedua kami:\n\n🌙✨ *Aisyah Rumaisha Aghnia* ✨🌙\n\nInfo lengkap acara & lokasi dapat dilihat pada link undangan berikut:\n${inviteUrl}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nKami yang mengundang,\n*Auva & Iwan*`;
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -1930,15 +2241,52 @@
             });
         });
 
-        // 7. Gallery Lightbox
-        function openLightbox(element) {
-            const imgSrc = element.querySelector('img').src;
-            document.getElementById('lightbox-img').src = imgSrc;
+        // 7. Gallery Switcher (Slider vs Grid) & Lightbox 9 Foto
+        let currentPhotoIndex = 0;
+
+        function switchGalleryView(mode) {
+            const track = document.getElementById('gallery-track');
+            const tabSlider = document.getElementById('tab-slider');
+            const tabGrid = document.getElementById('tab-grid');
+            const hint = document.getElementById('swipe-hint');
+
+            if (mode === 'grid') {
+                track.className = 'gallery-track mode-grid';
+                tabGrid.classList.add('active');
+                tabSlider.classList.remove('active');
+                hint.style.display = 'none';
+            } else {
+                track.className = 'gallery-track mode-slider';
+                tabSlider.classList.add('active');
+                tabGrid.classList.remove('active');
+                hint.style.display = 'flex';
+            }
+        }
+
+        function getGallerySources() {
+            return Array.from(document.querySelectorAll('.gallery-photo-item')).map(img => img.src);
+        }
+
+        function openLightboxIndex(index) {
+            const sources = getGallerySources();
+            currentPhotoIndex = index;
+            document.getElementById('lightbox-img').src = sources[currentPhotoIndex];
+            document.getElementById('lightbox-counter').textContent = `${currentPhotoIndex + 1} / ${sources.length}`;
             document.getElementById('lightbox').classList.add('active');
         }
 
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
+        function changeLightboxSlide(step, event) {
+            event.stopPropagation();
+            const sources = getGallerySources();
+            currentPhotoIndex = (currentPhotoIndex + step + sources.length) % sources.length;
+            document.getElementById('lightbox-img').src = sources[currentPhotoIndex];
+            document.getElementById('lightbox-counter').textContent = `${currentPhotoIndex + 1} / ${sources.length}`;
+        }
+
+        function closeLightbox(event) {
+            if (!event || event.target.id === 'lightbox') {
+                document.getElementById('lightbox').classList.remove('active');
+            }
         }
 
         // 8. Create Subtle Falling Petals
