@@ -1672,12 +1672,8 @@
             </div>
 
             <!-- Wrapper dengan Tombol Panah Kiri & Kanan -->
+            <!-- Wrapper Galeri (Tanpa Tombol Panah < dan > serta Tanpa Teks Petunjuk) -->
             <div class="gallery-slider-wrapper" style="position: relative;">
-                <button type="button" class="slider-arrow prev" id="slide-prev" onclick="scrollGallery(-1)" title="Geser Kiri">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-
-                <!-- [GANTI FOTO 2 SAMPAI 9 DI BAWAH INI - SUDAH DIPERBAIKI TAG PENUTUPNYA] -->
                 <div class="gallery-track mode-slider" id="gallery-track">
                     <!-- FOTO 2 -->
                     <div class="gallery-card" onclick="openLightboxIndex(1)">
@@ -1687,11 +1683,11 @@
                     <div class="gallery-card" onclick="openLightboxIndex(2)">
                         <img class="gallery-photo-item" src="foto 2.JPG" alt="Foto 3">
                     </div>
-                    <!-- FOTO 4 (Sudah ditambah </div> penutup) -->
+                    <!-- FOTO 4 -->
                     <div class="gallery-card" onclick="openLightboxIndex(3)">
                         <img class="gallery-photo-item" src="foto 3.JPG" alt="Foto 4">
                     </div>
-                    <!-- FOTO 5 (Sudah ditambah </div> penutup) -->
+                    <!-- FOTO 5 -->
                     <div class="gallery-card" onclick="openLightboxIndex(4)">
                         <img class="gallery-photo-item" src="foto 4.JPG" alt="Foto 5">
                     </div>
@@ -1712,14 +1708,6 @@
                         <img class="gallery-photo-item" src="foto terakhir.JPG" alt="Foto 9">
                     </div>
                 </div>
-
-                <button type="button" class="slider-arrow next" id="slide-next" onclick="scrollGallery(1)" title="Geser Kanan">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-
-            <div class="swipe-hint" id="swipe-hint">
-                <i class="fa-solid fa-hand-pointer"></i> Geser foto ke samping atau klik panah untuk melihat lainnya
             </div>
 
             <!-- Quranic Verse Banner (QS. Al-Furqan Ayat 74) -->
@@ -2261,18 +2249,15 @@
             const track = document.getElementById('gallery-track');
             const tabSlider = document.getElementById('tab-slider');
             const tabGrid = document.getElementById('tab-grid');
-            const hint = document.getElementById('swipe-hint');
 
             if (mode === 'grid') {
                 track.className = 'gallery-track mode-grid';
                 tabGrid.classList.add('active');
                 tabSlider.classList.remove('active');
-                hint.style.display = 'none';
             } else {
                 track.className = 'gallery-track mode-slider';
                 tabSlider.classList.add('active');
                 tabGrid.classList.remove('active');
-                hint.style.display = 'flex';
             }
         }
 
